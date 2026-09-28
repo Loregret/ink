@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-namespace GodotInkle;
+namespace GodotInk;
 
 [Tool, GlobalClass]
 public partial class InkChoice : RefCounted

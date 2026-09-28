@@ -1,12 +1,11 @@
-using InkodotEditor;
 using Godot;
 using System;
 using System.Collections.Generic;
 
-using static GodotInkle.MarshalUtils;
+using static GodotInk.MarshalUtils;
 using PropertyList = Godot.Collections.Array<Godot.Collections.Dictionary>;
 
-namespace GodotInkle;
+namespace GodotInk;
 
 [Tool, GlobalClass, Icon("uid://op2d8aagi35f")]
 public sealed partial class InkStory : Resource
@@ -58,7 +57,7 @@ public sealed partial class InkStory : Resource
 		if (IsInitialized) return;
 		IsInitialized = true;
 
-		if (RawStory.IsNullOrEmpty()) return;
+		if (string.IsNullOrEmpty(RawStory)) return;
 
 		if (!IsMainFile)
 		{

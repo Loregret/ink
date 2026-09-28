@@ -2,7 +2,7 @@
 
 using Godot;
 
-namespace GodotInkle;
+namespace GodotInk;
 
 [GlobalClass]
 public partial class InkList(Ink.Runtime.InkList inner) : RefCounted

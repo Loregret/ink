@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://mhdwjl1ydy8n"
-path="res://.godot/imported/TextFormatter.svg-58019b7231352ad07ee347fcf1d8009b.ctex"
+path="res://.godot/imported/TextFormatter.svg-d20f1701d5cfc6ce4dbe4ca62106ea4b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/inkodot_editor_plugin/text_formatter/TextFormatter.svg"
-dest_files=["res://.godot/imported/TextFormatter.svg-58019b7231352ad07ee347fcf1d8009b.ctex"]
+source_file="res://addons/ink/text_formatter/TextFormatter.svg"
+dest_files=["res://.godot/imported/TextFormatter.svg-d20f1701d5cfc6ce4dbe4ca62106ea4b.ctex"]
 
 [params]
 

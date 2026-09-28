@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 using GC = Godot.Collections;
 
-namespace GodotInkle;
+namespace GodotInk;
 
 public partial class InkStory
 {

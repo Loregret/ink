@@ -15,17 +15,17 @@ using CS = System.Collections.Generic;
 using DependenciesCache = System.Collections.Generic.Dictionary<string, string[]>;
 using System;
 
-namespace GodotInkle;
+namespace GodotInk;
 
 [Tool]
 public sealed partial class InkStoryImporter : EditorImportPlugin
 {
 	const string OPT_MAIN_FILE = "is_main_file";
-	
+
 	const string CACHE_FILE = "user://ink_cache.json";
 
 	public override string[] _GetRecognizedExtensions() => ["ink"];
-	
+
 	public override string _GetImporterName() => "ink_story_importer";
 	public override string _GetVisibleName() => "Ink Story";
 
@@ -34,7 +34,7 @@ public sealed partial class InkStoryImporter : EditorImportPlugin
 
 	public override int _GetPresetCount() => 0;
 	public override int _GetImportOrder() => 0;
-	
+
 	public override float _GetPriority() => 1.0f;
 	public override bool _GetOptionVisibility(string path, StringName optionName, GC.Dictionary options) => true;
 

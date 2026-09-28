@@ -2,9 +2,9 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-using static GodotInkle.MarshalUtils;
+using static GodotInk.MarshalUtils;
 
-namespace GodotInkle;
+namespace GodotInk;
 
 public partial class InkStory
 {

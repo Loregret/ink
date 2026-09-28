@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-namespace GodotInkle;
+namespace GodotInk;
 
 public static class MarshalUtils
 {
