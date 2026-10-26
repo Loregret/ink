@@ -1,9 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using static GodotInk.MarshalUtils;
-using PropertyList = Godot.Collections.Array<Godot.Collections.Dictionary>;
 
 namespace GodotInk;
 
@@ -11,11 +9,10 @@ namespace GodotInk;
 public sealed partial class InkStory : Resource
 {
 	[Export] public bool IsMainFile = true;
-	[Export] public bool IsInitialized;
+	[Export(PropertyHint.MultilineText)] public string RawStory = "";
 
 	public Ink.Runtime.Story? RuntimeStory;
-
-	public string RawStory = "";
+	public bool IsInitialized;
 
 	public string CurrentText => RuntimeStory?.currentText ?? throw new NullReferenceException();
 	public string CurrentFlowName => RuntimeStory?.currentFlowName ?? throw new NullReferenceException();
@@ -298,7 +295,7 @@ public sealed partial class InkStory : Resource
 		// Hide RawStory and IsMainFile from the editor, but keep them serialized.
 		if (name == nameof(RawStory) || name == nameof(IsMainFile))
 		{
-			property["usage"] = (int)PropertyUsageFlags.ReadOnly;
+			property["usage"] = (int)property["usage"] | (int)PropertyUsageFlags.Storage;
 		}
 	}
 }
