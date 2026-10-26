@@ -48,14 +48,13 @@ public partial class TextFormatter : Resource
 
 	string ColorizeAsteriskFormat(string input)
 	{
-		const string Replacement = "<color=gray>*$1*</color>";
-
 		if (HideAsteriskWhenColorized)
 		{
 			const string ReplacementNoAsterisk = "<color=gray>$1</color>";
 			return _asteriskRegex.Replace(input, ReplacementNoAsterisk);
 		}
 
+		const string Replacement = "<color=gray>*$1*</color>";
 		return _asteriskRegex.Replace(input, Replacement);
 	}
 
