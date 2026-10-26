@@ -47,14 +47,14 @@ public partial class TextFormatter : Resource
 
 	static string ColorizeAsteriskFormat(string input)
 	{
-		const string Replacement = "<color=gray>$1</color>";
-		return AsteriskRegex.Replace(input, Replacement);
+		const string Replacement = "<color=gray>*$1*</color>";
+		return _asteriskRegex.Replace(input, Replacement);
 	}
 
 	static string ItalicizeAsteriskFormat(string input)
 	{
 		const string Replacement = "<i>$1</i>";
-		return AsteriskRegex.Replace(input, Replacement);
+		return _asteriskRegex.Replace(input, Replacement);
 	}
 
 
@@ -80,10 +80,10 @@ public partial class TextFormatter : Resource
 	static string QuotationMarkFormat(string input, string opening, string closing)
 	{
 		// First pass: handle opening quotes
-		string result = OpeningQuotationMarkRegex.Replace(input, opening);
+		string result = _openingQuotationMarkRegex.Replace(input, opening);
 
 		// Second pass: handle closing quotes
-		result = ClosingQuotationMarkRegex.Replace(result, closing);
+		result = _closingQuotationMarkRegex.Replace(result, closing);
 
 		return result;
 	}
@@ -118,12 +118,12 @@ public partial class TextFormatter : Resource
 
 	//> Regex
 
-	static readonly Regex OpeningQuotationMarkRegex = CompiledOpeningQuotationMarkRegex();
+	static readonly Regex _openingQuotationMarkRegex = CompiledOpeningQuotationMarkRegex();
 	[GeneratedRegex(@"(?<=(^|\s|\(|\[|{|\p{Pi}))""")] private static partial Regex CompiledOpeningQuotationMarkRegex();
 
-	static readonly Regex ClosingQuotationMarkRegex = CompiledClosingQuotationMarkRegex();
+	static readonly Regex _closingQuotationMarkRegex = CompiledClosingQuotationMarkRegex();
 	[GeneratedRegex(@"""(?=($|\s|\.|,|;|:|!|\?|\)|\]|}|\p{Pf}))")] private static partial Regex CompiledClosingQuotationMarkRegex();
 
-	static readonly Regex AsteriskRegex = CompiledAsteriskRegex();
+	static readonly Regex _asteriskRegex = CompiledAsteriskRegex();
 	[GeneratedRegex(@"\*(.*?)\*")] private static partial Regex CompiledAsteriskRegex();
 }
