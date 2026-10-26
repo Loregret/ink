@@ -13,6 +13,7 @@ public partial class TextFormatter : Resource
 
 	[ExportSubgroup("Asterisk")]
 	[Export] public bool ColorizeAsterisk = true;
+	[Export] public bool HideAsteriskWhenColorized;
 	[Export] public Color ColorizeAsteriskColor = Colors.DarkGray;
 	[Export] public bool ItalicizeAsterisk = false;
 
@@ -45,9 +46,16 @@ public partial class TextFormatter : Resource
 
 	//> Asterisk
 
-	static string ColorizeAsteriskFormat(string input)
+	string ColorizeAsteriskFormat(string input)
 	{
 		const string Replacement = "<color=gray>*$1*</color>";
+
+		if (HideAsteriskWhenColorized)
+		{
+			const string ReplacementNoAsterisk = "<color=gray>$1</color>";
+			return _asteriskRegex.Replace(input, ReplacementNoAsterisk);
+		}
+
 		return _asteriskRegex.Replace(input, Replacement);
 	}
 
