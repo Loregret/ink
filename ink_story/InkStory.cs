@@ -295,7 +295,7 @@ public sealed partial class InkStory : Resource
 		// Hide RawStory and IsMainFile from the editor, but keep them serialized.
 		if (name == nameof(RawStory) || name == nameof(IsMainFile))
 		{
-			property["usage"] = (int)property["usage"] | (int)PropertyUsageFlags.Storage;
+			property["usage"] = (int)property["usage"] | (int)PropertyUsageFlags.ReadOnly;
 		}
 	}
 }
