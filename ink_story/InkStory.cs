@@ -1,7 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-
+using System.ComponentModel;
 using static GodotInk.MarshalUtils;
 using PropertyList = Godot.Collections.Array<Godot.Collections.Dictionary>;
 
@@ -10,8 +10,8 @@ namespace GodotInk;
 [Tool, GlobalClass, Icon("uid://op2d8aagi35f")]
 public sealed partial class InkStory : Resource
 {
-	public bool IsMainFile = true;
-	public bool IsInitialized;
+	[Export] public bool IsMainFile = true;
+	[Export] public bool IsInitialized;
 
 	public Ink.Runtime.Story? RuntimeStory;
 
@@ -55,9 +55,12 @@ public sealed partial class InkStory : Resource
 	public void Initialize()
 	{
 		if (IsInitialized) return;
-		IsInitialized = true;
 
-		if (string.IsNullOrEmpty(RawStory)) return;
+		if (string.IsNullOrEmpty(RawStory))
+		{
+			GD.PushWarning($"[InkStory] Raw Story is empty!");
+			return;
+		}
 
 		if (!IsMainFile)
 		{
@@ -75,6 +78,8 @@ public sealed partial class InkStory : Resource
 
 		RuntimeStory.onDidContinue += OnContinued;
 		RuntimeStory.onMakeChoice += OnMadeChoice;
+
+		IsInitialized = true;
 	}
 
 	/// <summary>
@@ -88,12 +93,13 @@ public sealed partial class InkStory : Resource
 	{
 		try
 		{
-			return RuntimeStory?.Continue() ?? "";
+			return RuntimeStory?.Continue() ?? throw new NullReferenceException("No runtime story!");
 		}
 
-		catch
+		catch (Exception ex)
 		{
-			return "";
+			GD.PushError($"[InkStory] Continue() threw: {ex.Message}");
+			throw;
 		}
 	}
 
@@ -105,14 +111,17 @@ public sealed partial class InkStory : Resource
 	/// <returns>The resulting text evaluated by the ink engine, concatenated together.</returns>
 	public string ContinueMaximally()
 	{
+		if (RuntimeStory is null) return "";
+
 		try
 		{
-			return RuntimeStory?.ContinueMaximally() ?? "";
+			return RuntimeStory.ContinueMaximally();
 		}
 
-		catch
+		catch (Exception ex)
 		{
-			return "";
+			GD.PushError($"[InkStory] ContinueMaximally() threw: {ex.Message}");
+			throw;
 		}
 	}
 
@@ -281,17 +290,15 @@ public sealed partial class InkStory : Resource
 		EmitSignal(SignalName.MadeChoice, new InkChoice(choice));
 	}
 
-	public override PropertyList _GetPropertyList()
+	public override void _ValidateProperty(Godot.Collections.Dictionary property) // hide RawStory from editor
 	{
-		PropertyList properties = base._GetPropertyList() ?? [];
+		// Get the name of the property being validated.
+		string name = property["name"].AsStringName();
 
-		properties.Add(new Godot.Collections.Dictionary()
+		// Hide RawStory and IsMainFile from the editor, but keep them serialized.
+		if (name == nameof(RawStory) || name == nameof(IsMainFile))
 		{
-			{ "name", PropertyName.RawStory },
-			{ "type", Variant.From(Variant.Type.Object) },
-			{ "usage", Variant.From(PropertyUsageFlags.NoEditor) },
-		});
-
-		return properties;
+			property["usage"] = (int)PropertyUsageFlags.ReadOnly;
+		}
 	}
 }

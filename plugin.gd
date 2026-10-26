@@ -7,7 +7,7 @@ func _enter_tree() -> void:
 	var src_path : String = get_script().get_path().get_base_dir().path_join("ink_importer")
 	var importer_script := load(src_path.path_join("InkStoryImporter.cs")) as CSharpScript
 
-	if not importer_script.can_instantiate():
+	if not importer_script or not importer_script.can_instantiate():
 		printerr("Can't instantiate importer!")
 		return
 

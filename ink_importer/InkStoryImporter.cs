@@ -3,6 +3,7 @@
 
 using Godot;
 using Ink;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,10 +11,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 
 using GC = Godot.Collections;
-using CS = System.Collections.Generic;
-
 using DependenciesCache = System.Collections.Generic.Dictionary<string, string[]>;
-using System;
 
 namespace GodotInk;
 
@@ -56,15 +54,19 @@ public sealed partial class InkStoryImporter : EditorImportPlugin
 			return ResourceSaver.Save(new InkStory() { IsMainFile = false }, destFile);
 		}
 
-		UpdateCache(sourceFile, ExtractIncludes(sourceFile));
+		List<string>? includes = ExtractIncludes(sourceFile);
+		if (includes is null)
+		{
+			return Godot.FileAccess.GetOpenError();
+		}
+
+		UpdateCache(sourceFile, includes);
 
 		Error returnValue = ImportFromInk(sourceFile, destFile);
 
-		var additionalFiles = GetCache().Where(kvp => kvp.Value.Contains(sourceFile)).Select(kvp => kvp.Key);
-
-		foreach (var additionalFile in additionalFiles)
+		foreach (string include in includes)
 		{
-			AppendImportExternalResource(additionalFile);
+			AppendImportExternalResource(include);
 		}
 
 		return returnValue;
@@ -130,9 +132,13 @@ public sealed partial class InkStoryImporter : EditorImportPlugin
 		}
 	}
 
-	static List<string> ExtractIncludes(string sourceFile)
+	static List<string>? ExtractIncludes(string sourceFile)
 	{
 		using var file = Godot.FileAccess.Open(sourceFile, Godot.FileAccess.ModeFlags.Read);
+		if (file is null)
+		{
+			return null;
+		}
 
 		return [.. includeRegex.Matches(file.GetAsText())
 						   .OfType<Match>()

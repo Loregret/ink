@@ -14,14 +14,12 @@ public partial class InkStory
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public string continue_story()
 	{
-		try
-		{
-			return Continue();
-		}
+		try { return Continue(); }
 
-		catch
+		catch (Exception ex)
 		{
-			return "";
+			GD.PushError($"[InkStory] continue_story() threw: {ex.Message}");
+			throw;
 		}
 	}
 
@@ -32,7 +30,18 @@ public partial class InkStory
 	}
 
 	[EditorBrowsable(EditorBrowsableState.Never)]
-	public bool can_continue() => CanContinue;
+	public bool can_continue()
+	{
+		try
+		{
+			return CanContinue;
+		}
+
+		catch
+		{
+			return false;
+		}
+	}
 
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public GC.Array<InkChoice> get_current_choices() => [.. CurrentChoices];
